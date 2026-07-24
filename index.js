@@ -32,7 +32,7 @@ async function createHotel(newHotel){
     try{
         const hotel = new Hotel(newHotel);
         const saveData = await hotel.save();
-        console.log("New movie data :",saveData.name);
+        console.log("New hotel data :",saveData.name);
     }catch(err){
         throw err;
     }
