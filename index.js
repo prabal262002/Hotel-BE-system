@@ -154,4 +154,38 @@ const readByPhoneNumber = async (phone) => {
         console.log(err);
     }
 }
-readByPhoneNumber("+1299655890");
+// readByPhoneNumber("+1299655890");
+
+const findByID = async (id, dataUpdated)=>{
+    try{
+        const updatedData = await Hotel.findByIdAndUpdate(id,dataUpdated,{new:true});
+        console.log(updatedData);
+    }catch(err){
+        throw err;
+    }
+}
+
+// findByID('6a64db66317b542cc100f58d',{checkOutTime: "11:00 AM"});
+
+const findByName = async (name, dataUpdated)=>{
+    try{
+        const updatedData = await Hotel.findOneAndUpdate({name},dataUpdated,{new:true});
+        console.log(updatedData);
+    }catch(err){
+        throw err;
+    }
+}
+
+// findByName("Sunset Resort",{rating:4.2});
+
+const findByNumber = async (number, dataUpdated)=>{
+    try{
+        const updatedData = await Hotel.findOneAndUpdate({phoneNumber: number},dataUpdated,{new:true});
+        console.log(updatedData);
+    }catch(err){
+        throw err;
+    }
+}
+
+findByNumber("+1299655890",{phoneNumber:"+1997687392"});
+
