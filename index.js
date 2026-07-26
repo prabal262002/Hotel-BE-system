@@ -200,7 +200,7 @@ const deleteById = async (id)=>{
 
 // deleteById("6a64db66317b542cc100f58d");
 
-const deleteRestaurantByName = async (name)=>{
+const deleteHotelByName = async (name)=>{
     try{
         const deletedData = await Hotel.findOneAndDelete({name});
         console.log("Deleted Data : ",deletedData);
@@ -209,4 +209,4 @@ const deleteRestaurantByName = async (name)=>{
     }
 }
 
-deleteRestaurantByName("Lake View");
+deleteHotelByName("Lake View");
