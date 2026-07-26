@@ -187,5 +187,26 @@ const findByNumber = async (number, dataUpdated)=>{
     }
 }
 
-findByNumber("+1299655890",{phoneNumber:"+1997687392"});
+// findByNumber("+1299655890",{phoneNumber:"+1997687392"});
 
+const deleteById = async (id)=>{
+    try{
+        const deletedData = await Hotel.findByIdAndDelete(id);
+        console.log("Deleted Data : ",deletedData);
+    }catch(err){
+        throw err;
+    }
+}
+
+// deleteById("6a64db66317b542cc100f58d");
+
+const deleteRestaurantByName = async (name)=>{
+    try{
+        const deletedData = await Hotel.findOneAndDelete({name});
+        console.log("Deleted Data : ",deletedData);
+    }catch(err){
+        throw err;
+    }
+}
+
+deleteRestaurantByName("Lake View");
