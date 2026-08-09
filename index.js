@@ -4,6 +4,10 @@ dns.setServers(["8.8.8.8", "8.8.4.4"]);
 const { initializeDB } = require("./db/db.connect");
 
 const Hotel = require("./models/hotels.model");
+const express = require("express")
+const app = express();
+require("dotenv").config();
+app.use(express());
 
 initializeDB();
 
@@ -80,7 +84,8 @@ async function createHotel(newHotel){
 const readAllHotels = async()=>{
     try{
         const data = await Hotel.find();
-        console.log(data);
+        // console.log(data);
+        return data;
     }catch(err){
         console.log(err);
     }
@@ -88,7 +93,8 @@ const readAllHotels = async()=>{
 const readByName = async(hotelName)=>{
     try{
         const data = await Hotel.find({name:hotelName});
-        console.log(data);
+        // console.log(data);
+        return data;
     }catch(err){
         console.log(err);
     }
@@ -119,7 +125,8 @@ const readByRestaurant = async () => {
 const readByCategory = async (hotelCategory) => {
     try {
         const data = await Hotel.find({ category: hotelCategory });
-        console.log(data);
+        // console.log(data);
+        return data;
     } catch(err) {
         console.log(err);
     }
@@ -139,7 +146,8 @@ const readByPriceRange = async (price) => {
 const readByRating = async (hotelRating) => {
     try {
         const data = await Hotel.find({ rating: hotelRating });
-        console.log(data);
+        // console.log(data);
+        return data;
     } catch(err) {
         console.log(err);
     }
@@ -149,7 +157,8 @@ const readByRating = async (hotelRating) => {
 const readByPhoneNumber = async (phone) => {
     try {
         const data = await Hotel.findOne({ phoneNumber: phone });
-        console.log(data);
+        // console.log(data);
+        return data;
     } catch(err) {
         console.log(err);
     }
@@ -209,4 +218,81 @@ const deleteHotelByName = async (name)=>{
     }
 }
 
-deleteHotelByName("Lake View");
+// deleteHotelByName("Lake View");
+
+const PORT = process.env.PORT || 6000;
+app.listen(PORT, ()=>{
+    console.log(`Server is running on Port - ${PORT}`);
+})
+
+app.get("/hotels", async (req,res)=>{
+    try{
+        const data = await readAllHotels();
+        if(data.length!=0){
+            res.json(data);
+        }else{
+            res.status(400).json({error:`Error reading the hotels`})
+        }
+    }catch(error){
+        res.status(400).json({error:`Failed!! - ${error}`})
+    }
+})
+
+app.get("/hotels/:hotelName", async (req,res)=>{
+    try{
+        const data = await readByName(req.params.hotelName);
+        console.log("Data length - ",data.length);
+        
+        if(data.length!=0){
+            res.json(data);
+        }else{
+            res.status(400).json({error:`Error reading the hotels`})
+        }
+    }catch(error){
+        res.status(400).json({error:`Failed!! - ${error}`})
+    }
+})
+
+app.get("/hotels/directory/:phoneNumber", async (req,res)=>{
+    try{
+        const data = await readByPhoneNumber(req.params.phoneNumber);
+        
+        if(data){
+            res.json(data);
+        }else{
+            res.status(400).json({error:`Error reading the hotels`})
+        }
+    }catch(error){
+        res.status(400).json({error:`Failed!! - ${error}`})
+    }
+})
+
+app.get("/hotels/rating/:hotelRating", async (req,res)=>{
+    try{
+        const data = await readByRating(req.params.hotelRating);
+        console.log("Data length - ",data.length);
+        
+        if(data.length!=0){
+            res.json(data);
+        }else{
+            res.status(400).json({error:`Error reading the hotels`})
+        }
+    }catch(error){
+        res.status(400).json({error:`Failed!! - ${error}`})
+    }
+})
+
+app.get("/hotels/category/:hotelCategory", async (req,res)=>{
+    try{
+        const data = await readByCategory(req.params.hotelCategory);
+        console.log("Data length - ",data.length);
+        
+        if(data.length!=0){
+            res.json(data);
+        }else{
+            res.status(400).json({error:`Error reading the hotels`})
+        }
+    }catch(error){
+        res.status(400).json({error:`Failed!! - ${error}`})
+    }
+})
