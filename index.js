@@ -7,7 +7,7 @@ const Hotel = require("./models/hotels.model");
 const express = require("express")
 const app = express();
 require("dotenv").config();
-app.use(express());
+app.use(express.json());
 
 initializeDB();
 
