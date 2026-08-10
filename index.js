@@ -75,7 +75,8 @@ async function createHotel(newHotel){
     try{
         const hotel = new Hotel(newHotel);
         const saveData = await hotel.save();
-        console.log("New hotel data :",saveData.name);
+        // console.log("New hotel data :",saveData.name);
+        return saveData;
     }catch(err){
         throw err;
     }
@@ -295,4 +296,14 @@ app.get("/hotels/category/:hotelCategory", async (req,res)=>{
     }catch(error){
         res.status(400).json({error:`Failed!! - ${error}`})
     }
+})
+
+
+app.post("/hotels", async (req, res) => {
+  try {
+    const savedHotel = await createHotel(req.body)
+    res.status(201).json({ message: "Hotel added successfully.", newHotel: savedHotel })
+  } catch (error) {
+    res.status(500).json({ error: `Failed to add hotel - ${error}` })
+  }
 })
