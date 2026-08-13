@@ -307,3 +307,27 @@ app.post("/hotels", async (req, res) => {
     res.status(500).json({ error: `Failed to add hotel - ${error}` })
   }
 })
+
+async function deleteHotel(hotelId) {
+    try {
+        const deletedHotel = await Hotel.findByIdAndDelete(hotelId);
+        return deletedHotel;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+app.delete("/hotels/:hotelId", async (req, res) => {
+    try {
+        const deletedHotel = await deleteHotel(req.params.hotelId);
+        
+        if (deletedHotel) {
+            res.status(200).json({ message: "Hotel deleted successfully.", hotel: deletedHotel });
+        } else {
+            res.status(404).json({ error: "Hotel not found." });
+        }
+    } catch (error) {
+        res.status(500).json({ error: "Failed to delete hotel." });
+    }
+});
