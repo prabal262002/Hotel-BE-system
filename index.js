@@ -331,3 +331,30 @@ app.delete("/hotels/:hotelId", async (req, res) => {
         res.status(500).json({ error: "Failed to delete hotel." });
     }
 });
+
+async function updateHotel(hotelId,dataToUpdate){
+    try{
+        const updatedHotel = Hotel.findByIdAndUpdate(
+            hotelId,
+            dataToUpdate,
+            { new:true }
+        );
+        return updatedHotel;
+    }catch(error){
+        console.log("Error in updating Restaurant data", error);
+        throw error;
+    }
+}
+
+app.post("/hotels/:hotelId", async(req, res)=>{
+    try{
+        const updatedData = await updateHotel(req.params.hotelId, req.body);
+        if(updatedData){
+            res.status(200).json({message:"Hotel updated successfully!!", hotel: updatedData});
+        }else{
+            res.status(400).json({error:"hotel not found!!"})
+        }
+    }catch(error){
+        res.status(500).json({ error: "Failed to update restaurant." });
+    }
+})
